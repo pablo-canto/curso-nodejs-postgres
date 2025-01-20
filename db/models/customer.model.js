@@ -13,7 +13,7 @@ const CustomerSchema = {
     allowNull: false,
     type: DataTypes.STRING
   },
-  lastname:{
+  lastName:{
     allowNull: false,
     type: DataTypes.STRING,
     field: 'last_name'
@@ -28,27 +28,28 @@ const CustomerSchema = {
     field: 'created_at',
     defaultValue: Sequelize.NOW
   },
-  userId:{
-    field:'user_id',
+  userId: {
+    field: 'user_id',
     allowNull: false,
     type: DataTypes.INTEGER,
-    references:{
+    unique: true,
+    references: {
       model: USER_TABLE,
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL',
+    onDelete: 'SET NULL'
   }
 }
 
-class Customer extends Model{
-  static associate(models){
-   this.belongsTo(models.User, {as: 'user'});
+class Customer extends Model {
+
+  static associate(models) {
+    this.belongsTo(models.User, {as: 'user'});
   }
 
-  static config(sequelize){
-    //config
-    return{
+  static config(sequelize) {
+    return {
       sequelize,
       tableName: CUSTOMER_TABLE,
       modelName: 'Customer',
