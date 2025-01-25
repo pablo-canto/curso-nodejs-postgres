@@ -1,6 +1,6 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
-const sequelize = require ('../libs/sequelize');
+const { models }= require ('../libs/sequelize');
 
 class ProductsService {
 
@@ -23,25 +23,31 @@ class ProductsService {
   }
 
   async create(data) {
+    const newProduct = await models.Product.create(data);
+    return newProduct;
+    /*
     const newProduct = {
       id: faker.datatype.uuid(),
       ...data
     }
     this.products.push(newProduct);
     return newProduct;
+    */
   }
 
   async find() {
-    const query = 'SELECT * FROM tasks';
+    //const query = 'SELECT * FROM tasks';
     //const rta = await this.pool.query(query);
     //const [data, metadata] = await sequelize.query(query);
-    const [data] = await sequelize.query(query);
+    const products = await models.Product.findAll({
+      include: ['category']
+    });
     //return rta.rows;
    /*  return {
       data,
       metadata
     }; */
-    return data;
+    return products;
     // return this.products;
   }
 
